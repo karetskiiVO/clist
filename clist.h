@@ -11,7 +11,8 @@
  * @brief POISON   - empty element
  */
 typedef double Elem_t;
-#define POISON (Elem_t)INFINITY
+const Elem_t POISON = (Elem_t)INFINITY;
+const size_t EMPTY  = (size_t)(-1);
 
 typedef struct {
     Elem_t value;
