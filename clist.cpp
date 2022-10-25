@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include <assert.h>
 
+const char* fdump = "dump.html";
+const char* gdump = "dmp.dot";
+
 void listCtor (List* lst, const size_t len) {
     if (lst == NULL) {
         return;
@@ -56,7 +59,7 @@ void listNew (List* lst) {
 }
 
 size_t listAdd (List* lst, const size_t pos, const Elem_t value) {
-    if (pos <= 0) {
+    if (pos < 0) {
         return EMPTY;
     }
 
@@ -109,4 +112,30 @@ Elem_t listRem (List* lst, const size_t pos) {
     return buf;
 }
 
-void listDump (List* lst);
+void listDump (List* lst) {
+    /// make graphviz visualisation
+    FILE* graph = fopen(gdump, "w");
+    fprintf(graph, "digraph g {\n\t{\n\t\tnode [shape=record];\n\t\trankdir=LR\n");
+    for (size_t i = 0; i <= lst->capacity; i++) {
+        fprintf(graph, "\t\tstruct%ld [label=\"<id>Num: %ld | value: %lg | {<pr>prev: %ld| <nt>next: %ld}\"];\n",
+                            i, i, lst->arr[i].value, lst->arr[i].prev, lst->arr[i].next);
+    }
+
+    fprintf(graph, "\t}\n");
+
+    for (size_t i = 0; i < lst->capacity; i++) {
+        fprintf(graph, "\tstruct%ld:id -> struct%ld:id[style=\"invis\" weight=\"1000\"]\n", i, i + 1);
+    }
+
+    for (size_t i = 0; i <= lst->capacity; i++) {
+        if (lst->arr[i].prev != EMPTY) {
+            fprintf(graph, "\tstruct%ld:nt -> struct%ld:pr\n", i, lst->arr[i].next);
+            fprintf(graph, "\tstruct%ld:nt -> struct%ld:pr\n", lst->arr[i].prev, i);
+        } else {
+            fprintf(graph, "\tstruct%ld:nt -> struct%ld:pr\n", i, lst->arr[i].next);
+        }
+    }
+    fprintf(graph, "\n}");
+
+    fclose(graph);
+}
