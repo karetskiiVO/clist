@@ -37,9 +37,8 @@ Doc/
 .vscode/
 .json
 
-*main.cpp
-*makefile
 *.d
 *.txt
 
 *test
+*.dot

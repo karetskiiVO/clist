@@ -7,6 +7,13 @@
 const char* fdump = "dump.html";
 const char* gdump = "dmp.dot";
 
+static bool iseq (const Elem_t a, const Elem_t b) {
+    if (fabs(a - b) < 10e-8) {
+        return true;
+    }
+    return false;
+}
+
 void listCtor (List* lst, const size_t len) {
     if (lst == NULL) {
         return;
@@ -54,6 +61,7 @@ void listNew (List* lst) {
     lst->free = 1;
     lst->size = 0;
     lst->capacity = 1;
+    lst->fastfind = false;
 
     listCtor(lst, 1);
 }
@@ -72,6 +80,8 @@ size_t listAdd (List* lst, const size_t pos, const Elem_t value) {
     }
 
     size_t freebuf = lst->free;
+
+    lst->fastfind = false;
 
     lst->free = lst->arr[freebuf].next;
 
@@ -96,10 +106,12 @@ Elem_t listRem (List* lst, const size_t pos) {
         return POISON;
     }
 
+    lst->fastfind = false;
+
     Elem_t buf = lst->arr[pos].value;
 
     lst->arr[lst->arr[pos].next].prev = lst->arr[pos].prev;
-    lst->arr[lst->arr[pos].next].prev = lst->arr[pos].prev;
+    lst->arr[lst->arr[pos].prev].next = lst->arr[pos].next;
 
     lst->arr[pos].value = POISON;
     lst->arr[pos].next  = lst->free;
@@ -115,13 +127,18 @@ Elem_t listRem (List* lst, const size_t pos) {
 void listDump (List* lst) {
     /// make graphviz visualisation
     FILE* graph = fopen(gdump, "w");
-    fprintf(graph, "digraph g {\n\t{\n\t\tnode [shape=record];\n\t\trankdir=LR\n");
+    fprintf(graph, "digraph g {\n\t\trankdir=LR\t{\n\t\tnode [shape=record];\n");
     for (size_t i = 0; i <= lst->capacity; i++) {
-        fprintf(graph, "\t\tstruct%ld [label=\"<id>Num: %ld | value: %lg | {<pr>prev: %ld| <nt>next: %ld}\"];\n",
+        if (lst->arr[i].prev != EMPTY) {
+            fprintf(graph, "\t\tstruct%ld [label=\"<id>Num: %ld | value: %lg | {<pr>prev: %ld| <nt>next: %ld}\" color=\"olivedrab1\"];\n",
                             i, i, lst->arr[i].value, lst->arr[i].prev, lst->arr[i].next);
+        } else {
+            fprintf(graph, "\t\tstruct%ld [label=\"<id>Num: %ld | value: %lg | {<pr>prev: %ld| <nt>next: %ld}\" color=\"firebrick3\"];\n",
+                            i, i, lst->arr[i].value, lst->arr[i].prev, lst->arr[i].next);
+        }
     }
 
-    fprintf(graph, "\t}\n");
+    fprintf(graph, "\n\t\t free\n\t}\n");
 
     for (size_t i = 0; i < lst->capacity; i++) {
         fprintf(graph, "\tstruct%ld:id -> struct%ld:id[style=\"invis\" weight=\"1000\"]\n", i, i + 1);
@@ -130,12 +147,82 @@ void listDump (List* lst) {
     for (size_t i = 0; i <= lst->capacity; i++) {
         if (lst->arr[i].prev != EMPTY) {
             fprintf(graph, "\tstruct%ld:nt -> struct%ld:pr\n", i, lst->arr[i].next);
-            fprintf(graph, "\tstruct%ld:nt -> struct%ld:pr\n", lst->arr[i].prev, i);
         } else {
             fprintf(graph, "\tstruct%ld:nt -> struct%ld:pr\n", i, lst->arr[i].next);
         }
     }
-    fprintf(graph, "\n}");
+    fprintf(graph, "\n\tfree -> struct%ld\n}", lst->free);
 
     fclose(graph);
+
+    // make html dump
+
+    static size_t iter = 0;
+    char comand[100] = "";
+    sprintf(comand, "dot -Tpng dmp.dot > source/pic%ld.png", iter);
+    system(comand);
+
+    FILE* hdump = fopen(fdump, "a");
+
+    if (iter == 1) {
+        fclose(hdump);
+        hdump = fopen(fdump, "w");
+        fprintf(hdump, "<pre>\n\n");
+    }
+
+    fprintf(hdump, "<h2>DUMP no:%ld</h2>\n\ncapasity:%ld\tsize:%ld\n", iter, lst->capacity, lst->size);
+
+    for (size_t i = 0; i <= lst->capacity; i++) {
+        fprintf(hdump, "\t%c[%ld]:\t%lg\tnt: %ld\tpr: %ld\n", (lst->arr[i].prev != EMPTY) ? (' ') : ('*'),
+                                            i, lst->arr[i].value, lst->arr[i].next, lst->arr[i].prev);
+    }
+
+    fprintf(hdump, "\t<img src=\"source/pic%ld.png\" alt=\"Dump no: %ld\" height=\"150\">\n", iter, iter);
+
+    iter++;
+    fclose(hdump);
+}
+
+void listLin  (List* lst) { /// make hard
+    ElemList* bufarr = (ElemList*)malloc((lst->capacity + 1) * sizeof(ElemList));
+
+    size_t bufpos = 0;
+
+    for (size_t i = 0; i <= lst->size; i++) {
+        bufarr[i] = lst->arr[bufpos];
+        bufpos = lst->arr[bufpos].next;
+    }
+
+    free(lst->arr);
+    lst->arr = bufarr;
+    
+    for (size_t i = 0; i <= lst->size; i++) {
+        lst->arr[i].next = (lst->size + i + 2) % (lst->size + 1);
+        lst->arr[i].prev = (lst->size + i) % (lst->size + 1);
+    }
+
+    lst->free = lst->size + 1;
+    lst->fastfind = true;
+
+    for (size_t i = lst->free; i <= lst->capacity; i++) {
+        lst->arr[i].value = POISON;
+        lst->arr[i].next = (lst->capacity + i + 2) % (lst->capacity + 1);
+        lst->arr[i].prev = EMPTY;
+    }
+}
+
+size_t listFind (const List* lst, const size_t pos) { /// make hard
+    if (lst->fastfind) {
+        return lst->arr[0].next + pos; // другая формула
+    }
+    
+    size_t posbuf = lst->arr[0].next;
+
+    for (size_t i = 0; i < lst->size; i++) {
+        if (pos == posbuf) return (i + 1);
+
+        posbuf = lst->arr[posbuf].next;
+    }
+
+    return EMPTY;
 }

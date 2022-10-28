@@ -1,6 +1,7 @@
 #ifndef CLIST
 #define CLIST
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <math.h>
 #include <stdint.h>
@@ -25,6 +26,7 @@ typedef struct {
     size_t size;
     size_t capacity;
     size_t free;
+    bool fastfind;
 } List;
 
 void listCtor (List* lst, const size_t len);
@@ -36,5 +38,7 @@ size_t listAdd (List* lst, const size_t pos, const Elem_t value);
 Elem_t listRem (List* lst, const size_t pos);
 
 void listDump (List* lst);
+
+void listLin  (List* lst);
 
 #endif // clist.h

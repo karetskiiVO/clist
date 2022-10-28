@@ -1,24 +1,25 @@
 digraph g {
-	{
+		rankdir=LR	{
 		node [shape=record];
-		rankdir=LR
-		struct0 [label="<id>Num: 0 | value: inf | {<pr>prev: 2| <nt>next: 10}"];
-		struct1 [label="<id>Num: 1 | value: inf | {<pr>prev: -1| <nt>next: 11}"];
-		struct2 [label="<id>Num: 2 | value: 1 | {<pr>prev: 3| <nt>next: 1}"];
-		struct3 [label="<id>Num: 3 | value: 2 | {<pr>prev: 4| <nt>next: 2}"];
-		struct4 [label="<id>Num: 4 | value: 3 | {<pr>prev: 5| <nt>next: 3}"];
-		struct5 [label="<id>Num: 5 | value: 4 | {<pr>prev: 6| <nt>next: 4}"];
-		struct6 [label="<id>Num: 6 | value: 5 | {<pr>prev: 7| <nt>next: 5}"];
-		struct7 [label="<id>Num: 7 | value: 6 | {<pr>prev: 8| <nt>next: 6}"];
-		struct8 [label="<id>Num: 8 | value: 7 | {<pr>prev: 9| <nt>next: 7}"];
-		struct9 [label="<id>Num: 9 | value: 8 | {<pr>prev: 10| <nt>next: 8}"];
-		struct10 [label="<id>Num: 10 | value: 9 | {<pr>prev: 0| <nt>next: 9}"];
-		struct11 [label="<id>Num: 11 | value: inf | {<pr>prev: -1| <nt>next: 12}"];
-		struct12 [label="<id>Num: 12 | value: inf | {<pr>prev: -1| <nt>next: 13}"];
-		struct13 [label="<id>Num: 13 | value: inf | {<pr>prev: -1| <nt>next: 14}"];
-		struct14 [label="<id>Num: 14 | value: inf | {<pr>prev: -1| <nt>next: 15}"];
-		struct15 [label="<id>Num: 15 | value: inf | {<pr>prev: -1| <nt>next: 16}"];
-		struct16 [label="<id>Num: 16 | value: inf | {<pr>prev: -1| <nt>next: 0}"];
+		struct0 [label="<id>Num: 0 | value: inf | {<pr>prev: 6| <nt>next: 1}" color="olivedrab1"];
+		struct1 [label="<id>Num: 1 | value: 40 | {<pr>prev: 0| <nt>next: 2}" color="olivedrab1"];
+		struct2 [label="<id>Num: 2 | value: 30 | {<pr>prev: 1| <nt>next: 3}" color="olivedrab1"];
+		struct3 [label="<id>Num: 3 | value: 20 | {<pr>prev: 2| <nt>next: 4}" color="olivedrab1"];
+		struct4 [label="<id>Num: 4 | value: 10 | {<pr>prev: 3| <nt>next: 5}" color="olivedrab1"];
+		struct5 [label="<id>Num: 5 | value: 0 | {<pr>prev: 4| <nt>next: 6}" color="olivedrab1"];
+		struct6 [label="<id>Num: 6 | value: 4 | {<pr>prev: 5| <nt>next: 0}" color="olivedrab1"];
+		struct7 [label="<id>Num: 7 | value: inf | {<pr>prev: -1| <nt>next: 8}" color="firebrick3"];
+		struct8 [label="<id>Num: 8 | value: inf | {<pr>prev: -1| <nt>next: 9}" color="firebrick3"];
+		struct9 [label="<id>Num: 9 | value: inf | {<pr>prev: -1| <nt>next: 10}" color="firebrick3"];
+		struct10 [label="<id>Num: 10 | value: inf | {<pr>prev: -1| <nt>next: 11}" color="firebrick3"];
+		struct11 [label="<id>Num: 11 | value: inf | {<pr>prev: -1| <nt>next: 12}" color="firebrick3"];
+		struct12 [label="<id>Num: 12 | value: inf | {<pr>prev: -1| <nt>next: 13}" color="firebrick3"];
+		struct13 [label="<id>Num: 13 | value: inf | {<pr>prev: -1| <nt>next: 14}" color="firebrick3"];
+		struct14 [label="<id>Num: 14 | value: inf | {<pr>prev: -1| <nt>next: 15}" color="firebrick3"];
+		struct15 [label="<id>Num: 15 | value: inf | {<pr>prev: -1| <nt>next: 16}" color="firebrick3"];
+		struct16 [label="<id>Num: 16 | value: inf | {<pr>prev: -1| <nt>next: 0}" color="firebrick3"];
+
+		 free
 	}
 	struct0:id -> struct1:id[style="invis" weight="1000"]
 	struct1:id -> struct2:id[style="invis" weight="1000"]
@@ -36,27 +37,17 @@ digraph g {
 	struct13:id -> struct14:id[style="invis" weight="1000"]
 	struct14:id -> struct15:id[style="invis" weight="1000"]
 	struct15:id -> struct16:id[style="invis" weight="1000"]
-	struct0:nt -> struct10:pr
-	struct2:nt -> struct0:pr
-	struct1:nt -> struct11:pr
-	struct2:nt -> struct1:pr
-	struct3:nt -> struct2:pr
-	struct3:nt -> struct2:pr
-	struct4:nt -> struct3:pr
-	struct4:nt -> struct3:pr
-	struct5:nt -> struct4:pr
-	struct5:nt -> struct4:pr
-	struct6:nt -> struct5:pr
-	struct6:nt -> struct5:pr
-	struct7:nt -> struct6:pr
-	struct7:nt -> struct6:pr
-	struct8:nt -> struct7:pr
-	struct8:nt -> struct7:pr
-	struct9:nt -> struct8:pr
-	struct9:nt -> struct8:pr
-	struct10:nt -> struct9:pr
-	struct10:nt -> struct9:pr
-	struct0:nt -> struct10:pr
+	struct0:nt -> struct1:pr
+	struct1:nt -> struct2:pr
+	struct2:nt -> struct3:pr
+	struct3:nt -> struct4:pr
+	struct4:nt -> struct5:pr
+	struct5:nt -> struct6:pr
+	struct6:nt -> struct0:pr
+	struct7:nt -> struct8:pr
+	struct8:nt -> struct9:pr
+	struct9:nt -> struct10:pr
+	struct10:nt -> struct11:pr
 	struct11:nt -> struct12:pr
 	struct12:nt -> struct13:pr
 	struct13:nt -> struct14:pr
@@ -64,4 +55,5 @@ digraph g {
 	struct15:nt -> struct16:pr
 	struct16:nt -> struct0:pr
 
+	free -> struct7
 }
