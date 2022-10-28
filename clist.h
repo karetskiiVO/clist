@@ -41,4 +41,6 @@ void listDump (List* lst);
 
 void listLin  (List* lst);
 
+size_t listFind (const List* lst, const size_t pos);
+
 #endif // clist.h

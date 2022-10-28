@@ -206,7 +206,7 @@ void listLin  (List* lst) { /// make hard
 
 size_t listFind (const List* lst, const size_t pos) { /// make hard
     if (lst->fastfind) {
-        return lst->arr[0].next + pos; // другая формула
+        return lst->arr[0].next + pos - 1; // другая формула
     }
     
     size_t posbuf = lst->arr[0].next;

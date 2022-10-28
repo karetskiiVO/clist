@@ -22,7 +22,10 @@ int main () {
         listDump(&list);
     }
 
+    printf("%ld\n", listFind(&list, 9));
+
     listLin(&list);
+    printf("%ld\n", listFind(&list, 2));
     listDump(&list);
 
     return 0;
