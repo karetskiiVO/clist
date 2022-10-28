@@ -5,6 +5,8 @@
 int main () {
     List list;
     listNew(&list);
+    listDump(&list);
+    
     for (size_t i = 0; i < 5; i++) {
         listAdd(&list, i, i);
         listDump(&list);

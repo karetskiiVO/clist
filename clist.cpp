@@ -7,13 +7,6 @@
 const char* fdump = "dump.html";
 const char* gdump = "dmp.dot";
 
-static bool iseq (const Elem_t a, const Elem_t b) {
-    if (fabs(a - b) < 10e-8) {
-        return true;
-    }
-    return false;
-}
-
 void listCtor (List* lst, const size_t len) {
     if (lst == NULL) {
         return;
@@ -164,13 +157,13 @@ void listDump (List* lst) {
 
     FILE* hdump = fopen(fdump, "a");
 
-    if (iter == 1) {
+    if (iter == 0) {
         fclose(hdump);
         hdump = fopen(fdump, "w");
         fprintf(hdump, "<pre>\n\n");
     }
 
-    fprintf(hdump, "<h2>DUMP no:%ld</h2>\n\ncapasity:%ld\tsize:%ld\n", iter, lst->capacity, lst->size);
+    fprintf(hdump, "<h2>DUMP no:%ld</h2>\n\ncapasity: %ld\tsize: %ld\n", iter, lst->capacity, lst->size);
 
     for (size_t i = 0; i <= lst->capacity; i++) {
         fprintf(hdump, "\t%c[%ld]:\t%lg\tnt: %ld\tpr: %ld\n", (lst->arr[i].prev != EMPTY) ? (' ') : ('*'),
