@@ -21,6 +21,7 @@ digraph g {
 
 		 free
 	}
+
 	struct0:id -> struct1:id[style="invis" weight="1000"]
 	struct1:id -> struct2:id[style="invis" weight="1000"]
 	struct2:id -> struct3:id[style="invis" weight="1000"]

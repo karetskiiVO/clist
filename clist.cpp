@@ -4,6 +4,10 @@
 #include <stdio.h>
 #include <assert.h>
 
+/**
+ * @note fdumo - name of .html dump file
+ * @note gdump - name of buffer file to graphviz visualistion
+ */
 const char* fdump = "dump.html";
 const char* gdump = "dmp.dot";
 
@@ -131,7 +135,7 @@ void listDump (List* lst) {
         }
     }
 
-    fprintf(graph, "\n\t\t free\n\t}\n");
+    fprintf(graph, "\n\t\t free\n\t}\n\n");
 
     for (size_t i = 0; i < lst->capacity; i++) {
         fprintf(graph, "\tstruct%ld:id -> struct%ld:id[style=\"invis\" weight=\"1000\"]\n", i, i + 1);
