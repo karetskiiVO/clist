@@ -64,10 +64,6 @@ void listNew (List* lst) {
 }
 
 size_t listAdd (List* lst, const size_t pos, const Elem_t value) {
-    if (pos < 0) {
-        return EMPTY;
-    }
-
     if (lst->arr[pos].prev == EMPTY) {
         return EMPTY;
     }
@@ -95,7 +91,7 @@ size_t listAdd (List* lst, const size_t pos, const Elem_t value) {
 }
 
 Elem_t listRem (List* lst, const size_t pos) {
-    if (pos <= 0) {
+    if (pos == 0) {
         return POISON;
     }
 
